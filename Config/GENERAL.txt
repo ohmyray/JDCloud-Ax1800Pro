@@ -22,6 +22,7 @@ CONFIG_PACKAGE_luci-app-filemanager=y                  #文件管理器
 
 # ==================== 删除插件 ====================
 CONFIG_PACKAGE_luci-app-wol=n                           # 禁用基础 WOL（使用 wolplus 替代）
+CONFIG_PACKAGE_libcronet=n                             # libcronet 源码需 chromium 镜像，Actions 下载必失败
 # ==================== 参数调整 ====================
 CONFIG_CCACHE=y                                        # 启用编译缓存（加速二次编译）
 CONFIG_DEVEL=y                                         # 开发者模式（包含调试工具）

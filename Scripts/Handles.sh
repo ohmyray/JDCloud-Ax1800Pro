@@ -146,6 +146,19 @@ fi
        echo "Removed conflicting packages from feeds!"
    fi
 
+   # libcronet 源码来自 SagerNet/naiveproxy 的 chromium 镜像仓，runner 上 download 必挂
+   # 它只服务 naiveproxy，留着会拖垮整个编译
+   rm -rf $GITHUB_WORKSPACE/wrt/feeds/packages/libs/libcronet \
+          $GITHUB_WORKSPACE/wrt/package/feeds/packages/libcronet
+   echo "Removed orphan libcronet!"
+
+   # miniupnpd 的 020 补丁与 2.3.11 源码漂移，5/7 hunk 打不上导致整个 variant 失败
+   MINIUPNP_PATCH="$GITHUB_WORKSPACE/wrt/feeds/packages/net/miniupnpd/patches/020-descr-filter-fix.patch"
+   if [ -f "$MINIUPNP_PATCH" ]; then
+      rm -f "$MINIUPNP_PATCH"
+      echo "Removed broken miniupnpd patch!"
+   fi
+
    # 克隆 Passwall 依赖包（passwall-packages）
    if [ ! -d "$GITHUB_WORKSPACE/wrt/package/passwall-packages" ]; then
        cd $GITHUB_WORKSPACE/wrt/package/
