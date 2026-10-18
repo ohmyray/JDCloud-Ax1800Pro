@@ -122,28 +122,16 @@ fi
    if [ -d "$GITHUB_WORKSPACE/wrt/feeds/packages/net" ]; then
 #       rm -rf $GITHUB_WORKSPACE/wrt/feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-libev,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,trojan-plus,tuic-client,v2ray-plugin,xray-plugin,geoview,shadow-tls}
 
-   rm -rf $GITHUB_WORKSPACE/wrt/feeds/packages/net/{
-     xray-core,
-     v2ray-geodata,
-     sing-box,
-     chinadns-ng,
-     dns2socks,
-     hysteria,
-     ipt2socks,
-     microsocks,
-     naiveproxy,
-     shadowsocks-libev,
-     shadowsocks-rust,
-     shadowsocksr-libev,
-     simple-obfs,
-     tcping,
-     trojan-plus,
-     tuic-client,
-     v2ray-plugin,
-     xray-plugin,
-     geoview,
-     shadow-tls}
-       echo "Removed conflicting packages from feeds!"
+   # 花括号跨行 bash 不展开，改为逐包删除
+   # 同时清掉 package/feeds 下的软链，否则会变成悬空链接
+   for PKG in xray-core v2ray-geodata sing-box chinadns-ng dns2socks hysteria \
+              ipt2socks microsocks naiveproxy shadowsocks-libev shadowsocks-rust \
+              shadowsocksr-libev simple-obfs tcping trojan-plus tuic-client \
+              v2ray-plugin xray-plugin geoview shadow-tls; do
+       rm -rf "$GITHUB_WORKSPACE/wrt/feeds/packages/net/$PKG" \
+              "$GITHUB_WORKSPACE/wrt/package/feeds/packages/$PKG"
+   done
+      echo "Removed conflicting packages from feeds!"
    fi
 
    # libcronet 源码来自 SagerNet/naiveproxy 的 chromium 镜像仓，runner 上 download 必挂

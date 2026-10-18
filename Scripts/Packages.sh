@@ -122,5 +122,6 @@ UPDATE_VERSION() {
 }
 
 #UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
-UPDATE_VERSION "sing-box"
+# 自动升版与 feeds 配方不匹配，改为固定 feeds 版本
+#UPDATE_VERSION "sing-box"
 UPDATE_VERSION "tailscale"
