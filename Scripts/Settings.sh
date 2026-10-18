@@ -205,3 +205,6 @@ echo "CONFIG_DEFAULT_tcp_bbr=y" >> ./.config               # 默认使用 BBR �
 # 
 # docker(只能集成)
 #echo "CONFIG_PACKAGE_luci-app-dockerman=y" >> ./.config
+
+# 内核 BTF 与 tc-bpf（必须在 make defconfig 之前）
+"${GITHUB_WORKSPACE:-..}/Scripts/Kernel-BTF.sh"
