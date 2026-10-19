@@ -152,3 +152,17 @@ Scripts/Settings.sh
 内置 btop 简单明了的系统资源占用查看工具
 内置 curl 网络通信工具
 内置 kmod-tcp-bbr BBR 拥塞控制算法替换Cubic(单车变摩托)
+
+8.
+Scripts/Fixes.sh（新增，由 WRT-CORE.yml 在 defconfig 前调用，幂等）
+
+上游 feed 与本项目配置有几处硬冲突，不修就必然编译失败：
+
+| 问题 | 现象 | 处理 |
+|---|---|---|
+| lm-sensors 补丁 100 在 `$(shell ...)` 里写 `'#include <iconv.h>'` | make 把 `#` 当注释 → `unterminated call to function 'shell'` | `#` 转义成 `\#` |
+| sing-box 的 `SING_BOX_BUILD_NAIVE_OUTBOUND` 是 `def_bool y` | 强选 libcronet，而 libcronet 的 clang/PGO 在 Google 存储、镜像哈希也对不上 | 改成可选 `bool` + `default n`，`GENERAL.txt` 里的 `CONFIG_PACKAGE_libcronet=n` 才真正生效 |
+| miniupnpd 的 020/030/040 补丁 | 2.3.11 已合入这些改动，再打 hunk FAILED | 改名 `*.patch.skip` 停用（保留 010、900） |
+| AX1800Pro 内核分区只有 6MB | 开 BTF 后 gzip 压完 7.14MB，超限编译中断 | `jdcloud_re-ss-01` 改用 `Device/FitImageLzma`，压完 5.21MB |
+
+`Scripts/Kernel-BTF.sh` 同时补了 `# CONFIG_DEBUG_INFO_REDUCED is not set`——REDUCED 一旦为 y，BTF 选项会被 kconfig 整条屏蔽。

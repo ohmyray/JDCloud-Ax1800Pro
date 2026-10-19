@@ -309,6 +309,13 @@ jobs:
           $GITHUB_WORKSPACE/Scripts/Packages.sh
           $GITHUB_WORKSPACE/Scripts/Handles.sh
 
+      - name: Apply Upstream Fixes(修复 feed 补丁与内核镜像体积)
+        run: |
+          cd ./wrt/
+          # lm-sensors 补丁 # 转义 / sing-box 不再强选 libcronet /
+          # miniupnpd 停用已合入上游的补丁 / AX1800Pro 内核改用 lzma 压缩
+          $GITHUB_WORKSPACE/Scripts/Fixes.sh
+
       - name: Custom Settings(自定义设置)
         run: |
           cd ./wrt/
